@@ -2,6 +2,7 @@ import express from "express";
 import {getActiveCart} from '../services/cartServices.js'
 import {validJWT} from '../middlewares/validateJWT.js'
 import {addnewitems} from '../services/cartServices.js'
+import {updateitem} from '../services/cartServices.js'
 const router = express.Router();
 
 router.get('/',validJWT,async(req,res)=>{
@@ -19,4 +20,12 @@ router.post('/items',validJWT,async(req,res)=>{
 
     res.status(result.status).send(result.data)
 })
+
+router.put('/items',validJWT,async(req,res)=>{
+    const userId = req.user._id;
+    const {productID,quantité} = req.body;
+    const result = await updateitem({userId,productID,quantité})
+
+    res.status(result.status).send(result.data)
+}) 
 export default router;

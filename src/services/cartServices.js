@@ -32,7 +32,7 @@ export const addnewitems = async({userId,productID,quantité}) => {
         return {data:'invalid product',status:403}
     }
     if(product.stock < quantité) {
-        return {data:'lo stock for item',status:400}
+        return {data:'low stock for item',status:400}
     }
 
     cart.items.push({product:productID,quantité,unitprice:product.price})
@@ -41,4 +41,41 @@ export const addnewitems = async({userId,productID,quantité}) => {
 
     const updatecart =await cart.save()
     return {data:updatecart,status:200}
+}
+
+
+export const updateitem = async({userId,productID,quantité}) => {
+    const cart = await getActiveCart({userId})
+    const existitem = cart.items.find((p)=>p.product.toString() === productID)
+
+    if(!existitem) {
+        return {data:'the product does not exist',status:400}
+    }
+    const product = await ProductModul.findById(productID)
+
+    if(!product) {
+        return {data:'invalid product',status:403}
+    }
+    if(product.stock < quantité) {
+        return {data:'low stock for item',status:400}
+    }
+
+
+    const othercarts = cart.items.filter((p)=>p.product.toString() !==productID)
+
+    let total = othercarts.reduce((sum,itm)=>{
+        sum+=itm.quantité * itm.unitprice;
+        return sum
+    },0)
+
+
+    existitem.quantité = quantité;
+
+    total += existitem.quantité * existitem.unitprice;
+
+    cart.totalamont=total
+
+    const updatedcart = await cart.save();
+
+    return {data:updatedcart,status:200}
 }

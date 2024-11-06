@@ -13,7 +13,7 @@ export const register = async ({ firstname, lastname, email, password }) => {
 
     
 
-    const hashingpws = await bcrypt.hash(password, 12);
+    const hashingpws = await bcrypt.hash(password, 10);
     const newUser = await userModel({ firstname, lastname, email, password: hashingpws })
     await newUser.save()
     return { data: gen_jwt({email,firstname,lastname}), statuscode: 200 }
