@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const statusenum = ['active','complate'];
 
 const cartItemSchema = new Schema({
-    productID : {type:Schema.Types.ObjectId, ref:'Product',required:true},
+    product : {type:Schema.Types.ObjectId, ref:'Product',required:true},
     quantité : {type:Number,required:true,default:1},
     unitprice : {type:Number,required:true}
 })

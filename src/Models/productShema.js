@@ -7,7 +7,6 @@ const ProductShema = new Schema({
     stock:{type:Number,required:true,default:0}
 });
 
-
 const ProductModul = mongoose.model('Product',ProductShema)
 
 export default ProductModul;

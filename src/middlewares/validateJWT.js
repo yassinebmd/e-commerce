@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import { userModel } from "../Models/userShema.js";
+
 export const validJWT = (req,res,next) => {
     const authorizationheader = req.get('authorization');
     if(!authorizationheader) {
         res.status(401).send('authorization header not found')
-        return;
+        return
     }
 
     const token = authorizationheader.split(" ")[1];
