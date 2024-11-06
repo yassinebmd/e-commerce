@@ -1,4 +1,4 @@
-import { studentModel } from "../Models/userShema.js"
+import { userModel } from "../Models/userShema.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
@@ -6,17 +6,17 @@ import jwt from 'jsonwebtoken';
 
 
 export const register = async ({ firstname, lastname, email, password }) => {
-    const findUser = await studentModel.findOne({ email })
+    const findUser = await userModel.findOne({ email })
     if (findUser) {
-        return { data: 'you already exicts ! ', statuscode: 400 }
+        return { data: 'you already exist ! ', statuscode: 400 }
     }
 
     
 
     const hashingpws = await bcrypt.hash(password, 12);
-    const newUser = await studentModel({ firstname, lastname, email, password: hashingpws })
+    const newUser = await userModel({ firstname, lastname, email, password: hashingpws })
     await newUser.save()
-    return { data: gen_jwt({email,firstname:findUser.firstname,lastname:findUser.lastname}), statuscode: 200 }
+    return { data: gen_jwt({email,firstname,lastname}), statuscode: 200 }
 }
 
 
@@ -24,7 +24,7 @@ export const register = async ({ firstname, lastname, email, password }) => {
 
 
 export const login = async ({ password, email }) => {
-    const findUser = await studentModel.findOne({ email })
+    const findUser = await userModel.findOne({ email })
     if (!findUser) {
         return { data: 'incorrect email or password', statuscode: 400 }
     }

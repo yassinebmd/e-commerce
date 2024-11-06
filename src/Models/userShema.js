@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-const studentShema  = new Schema({
+const userShema  = new Schema({
     firstname:{type:String, required:true},
     lastname:{type:String ,required:true},
     email:{type:String ,required:true},
@@ -7,4 +7,4 @@ const studentShema  = new Schema({
     
 })
 
-export const studentModel = mongoose.model('user',studentShema)
+export const userModel = mongoose.model('user',userShema)
