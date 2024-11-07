@@ -11,7 +11,7 @@ export const register = async ({ firstname, lastname, email, password }) => {
         return { data: 'you already exist ! ', statuscode: 400 }
     }
 
-    
+
 
     const hashingpws = await bcrypt.hash(password, 10);
     const newUser = await userModel({ firstname, lastname, email, password: hashingpws })
