@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import('dotenv/config')
 import { userModel } from "../Models/userShema.js";
 
 export const validJWT = (req,res,next) => {
@@ -15,7 +16,7 @@ export const validJWT = (req,res,next) => {
         return;
     }
 
-    jwt.verify(token,'eajGxWMOxdigKQLKdk6SVCQIFb7ywziw',async(err,payload)=>{
+    jwt.verify(token,process.env.JWT_SECRET,async(err,payload)=>{
         if(err) {
             res.status(403).send('invalid token !')
         }

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const statusenum = ['active','complate'];
+const statusenum = ['active','completed'];
 
 const cartItemSchema = new Schema({
     product : {type:Schema.Types.ObjectId, ref:'Product',required:true},

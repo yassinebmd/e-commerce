@@ -1,3 +1,4 @@
+import('dotenv/config')
 import { userModel } from "../Models/userShema.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
@@ -10,7 +11,6 @@ export const register = async ({ firstname, lastname, email, password }) => {
     if (findUser) {
         return { data: 'you already exist ! ', statuscode: 400 }
     }
-
 
 
     const hashingpws = await bcrypt.hash(password, 10);
@@ -28,6 +28,7 @@ export const login = async ({ password, email }) => {
     if (!findUser) {
         return { data: 'incorrect email or password', statuscode: 400 }
     }
+    
     const matchingPsw = await bcrypt.compare(password, findUser.password)
     if (matchingPsw) {
         return { data: gen_jwt({email,firstname:findUser.firstname,lastname:findUser.lastname}), statuscode: 200 }
@@ -38,5 +39,5 @@ export const login = async ({ password, email }) => {
 
 
 const gen_jwt = (data) => {
-    return jwt.sign(data,'eajGxWMOxdigKQLKdk6SVCQIFb7ywziw')
+    return jwt.sign(data,process.env.JWT_SECRET)
 }
