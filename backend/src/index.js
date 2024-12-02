@@ -7,11 +7,13 @@ import cartRouter from "./routers/cartRouter.js"
 import {seedProducts} from './services/ProductServices.js';
 dotenv.config();
 
+import cors from 'cors'
+
 const app = express()
 const port = 5001
 
 app.use(express.json())
-
+ app.use(cors())
 
 mongoose
     .connect(process.env.DATA_BASE_URL)
