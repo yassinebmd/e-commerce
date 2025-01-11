@@ -11,12 +11,11 @@ router.post('/register',async(req,res)=>{
         const {firstname,lastname,email,password} = req.body;
 
     const result = await register({firstname,lastname,email,password})
-    res.status(result.statuscode).send(result.data)
+    res.status(result.statuscode).json(result.data)
     } catch (error) {
         res.status(500).send('there something went wrong !')
 
-    }
-    
+    } 
 })
 
 router.post('/login',async(req,res)=>{
@@ -30,5 +29,11 @@ router.post('/login',async(req,res)=>{
     }
     
 
-})
+});
+
+
+
 export default router;
+
+
+
