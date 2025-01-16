@@ -11,13 +11,16 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import Grid from '@mui/material/Grid';
+import { UseAuth } from '../context/auth/authContext';
+import { useNavigate } from 'react-router-dom';
 
 function ResponsiveAppBar() {
+  const { username, isauthenticated } = UseAuth()
+
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  
+  const Navigate = useNavigate();
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -27,95 +30,109 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  console.log('mn navbar ', username );
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box sx={{display:'flex', justifyContent:'space-between',flexDirection:'row',width:'100%', alignItems:'center'}}>
-        <Box sx={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-          <AdbIcon sx={{ display: 'flex' , mr: 1 }} />
-          
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            jacin tech
-          </Typography>
-          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <AdbIcon sx={{ display: 'flex', mr: 1 }} />
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-             
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-          
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-       
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="#app-bar-with-responsive-menu"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                jacin tech
+              </Typography>
+            </Box>
+
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+
+                color="inherit"
+              >
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+
+            </Box>
+            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              LOGO
+            </Typography>
+
+            <Box sx={{ flexGrow: 0 }}>
+            {isauthenticated ? <>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item>
+                      <Typography>{username}</Typography>
+                    </Grid>
+                    <Grid item>
+                    <Avatar alt={username || ''} src="/static/images/avatar/2.jpg" />
+                    </Grid>
+                  </Grid>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem  onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: 'center' }}>my orders</Typography>
+                  </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                  </MenuItem>
+              </Menu>
+              
+            </> : <button color='black' onClick={()=>Navigate('/login')}>Login</button>}
+              
+            </Box>
           </Box>
         </Toolbar>
       </Container>
