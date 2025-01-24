@@ -4,9 +4,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { UseCart } from '../context/Cart/cartContext';
 
 // eslint-disable-next-line react/prop-types
-export default function MediaCard({price,title,image}) {
+export default function MediaCard({_id,price,title,image}) {
+
+  const {addItemToCart} = UseCart()
   return (
     <Card >
       <CardMedia
@@ -23,7 +26,7 @@ export default function MediaCard({price,title,image}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant='contained' size="small">Add to card</Button>
+        <Button variant='contained' size="small" onClick={()=>addItemToCart(_id)}>Add to card</Button>
       </CardActions>
     </Card>
   );

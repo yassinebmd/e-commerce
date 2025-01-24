@@ -6,24 +6,27 @@ import { AuthProvider } from './context/auth/authProvider'
 import { Login } from './pages/login.jsx'
 import { Cart } from './pages/cart.jsx'
 import { ProtectedRoute } from './components/protectedroute.jsx'
+import CartProvider from '../src/context/Cart/cartProvider.jsx'
 function App() {
 
   return (
     <>
       <AuthProvider>
-        <BrowserRouter>
-          <ResponsiveAppBar />
-          <Routes>
-            <Route path='/' element={<Homepage />} />
-            <Route path='/Register' element={<Register />} />
-            <Route path='/login' element={<Login />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path='/Cart' element={<Cart />} />
+        <CartProvider>
+          <BrowserRouter>
+            <ResponsiveAppBar />
+            <Routes>
+              <Route path='/' element={<Homepage />} />
+              <Route path='/Register' element={<Register />} />
+              <Route path='/login' element={<Login />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path='/Cart' element={<Cart />} />
 
-            </Route>
+              </Route>
 
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </AuthProvider>
 
     </>
