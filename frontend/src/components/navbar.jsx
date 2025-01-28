@@ -5,57 +5,52 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import Grid from '@mui/material/Grid';
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import { UseAuth } from '../context/auth/authContext';
 import { useNavigate } from 'react-router-dom';
-import { Badge } from '@mui/material';
+import { Badge, Button } from '@mui/material';
+import { UseCart } from '../context/Cart/cartContext';
 
 function ResponsiveAppBar() {
-  const { username, isauthenticated, logout } = UseAuth()
+  const { username, isauthenticated, logout } = UseAuth();
+  const { cartItem } = UseCart();
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const handlLogout = () => {
+  const handleLogout = () => {
     logout();
-    Navigate('/');
-    handleCloseUserMenu()
-
-  }
-  console.log('mn navbar ', username);
+    navigate('/');
+    handleCloseUserMenu();
+  };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-              <AdbIcon sx={{ display: 'flex', mr: 1 }} />
-
+          {/* Logo and Navigation */}
+          <Button onClick={() => navigate('/')} sx={{ color: 'white', textTransform: 'none' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <AdbIcon sx={{ mr: 1 }} />
               <Typography
                 variant="h6"
                 noWrap
-                component="a"
-                href="#app-bar-with-responsive-menu"
+                component="div"
                 sx={{
-                  mr: 2,
-                  display: { xs: 'none', md: 'flex' },
                   fontFamily: 'monospace',
                   fontWeight: 700,
                   letterSpacing: '.3rem',
@@ -63,60 +58,26 @@ function ResponsiveAppBar() {
                   textDecoration: 'none',
                 }}
               >
-                jacin tech
+                Jacin Tech
               </Typography>
             </Box>
+          </Button>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+          {/* Cart and User Menu */}
+          <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }} gap={2}>
+            {/* Cart Icon */}
+            <IconButton aria-label="cart" onClick={() => navigate('/cart')}>
+              <Badge badgeContent={cartItem.length} color="secondary">
+                <ShoppingCart sx={{ color: 'white' }} />
+              </Badge>
+            </IconButton>
 
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-
-            </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography>
-
-            <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-              <IconButton aria-label="cart" onClick={() => Navigate('/cart')}>
-                <Badge badgeContent={4} color="secondary">
-                  <ShoppingCart sx={{color:'white'}}/>
-                </Badge>
-              </IconButton>
-              {isauthenticated ? <>
+            {/* User Authentication */}
+            {isauthenticated ? (
+              <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item>
-                        <Typography>{username}</Typography>
-                      </Grid>
-                      <Grid item>
-                        <Avatar alt={username || ''} src="/static/images/avatar/2.jpg" />
-                      </Grid>
-                    </Grid>
+                    <Avatar alt={username || ''} src="/static/images/avatar/2.jpg" />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -136,20 +97,23 @@ function ResponsiveAppBar() {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>my orders</Typography>
+                    <Typography sx={{ textAlign: 'center' }}>My Orders</Typography>
                   </MenuItem>
-                  <MenuItem onClick={handlLogout}>
+                  <MenuItem onClick={handleLogout}>
                     <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
                   </MenuItem>
                 </Menu>
-
-              </> : <button color='black' onClick={() => Navigate('/login')}>Login</button>}
-
-            </Box>
+              </>
+            ) : (
+              <Button color="inherit" onClick={() => navigate('/login')}>
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

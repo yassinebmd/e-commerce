@@ -22,22 +22,35 @@ export const register = async ({ firstname, lastname, email, password }) => {
 
 
 
-
 export const login = async ({ password, email }) => {
-    const findUser = await userModel.findOne({ email })
-    if (!findUser) {
-        return { data: 'incorrect email or password', statuscode: 400 }
-    }
-    
-    const matchingPsw = await bcrypt.compare(password, findUser.password)
-    if (matchingPsw) {
-        return { data: gen_jwt({email,firstname:findUser.firstname,lastname:findUser.lastname}), statuscode: 200 }
-    }
-    return { data: 'incorrect email or password', statuscode: 400 }
+    try {
+        const findUser = await userModel.findOne({ email });
+        if (!findUser) {
+            return { data: 'Incorrect email or password', statuscode: 400 };
+        }
 
-}
+        const matchingPsw = await bcrypt.compare(password, findUser.password);
+        if (matchingPsw) {
+            const token = gen_jwt({
+                email,
+                firstname: findUser.firstname,
+                lastname: findUser.lastname,
+            });
+            return { data: { token }, statuscode: 200 };
+        }
 
+        return { data: 'Incorrect email or password', statuscode: 400 };
+    } catch (error) {
+        console.error("Login error:", error);
+        return { data: 'An error occurred while logging in', statuscode: 500 };
+    }
+};
 
 const gen_jwt = (data) => {
-    return jwt.sign(data,process.env.JWT_SECRET)
-}
+    try {
+        return jwt.sign(data, process.env.JWT_SECRET);
+    } catch (error) {
+        console.error("JWT generation error:", error);
+        throw new Error('JWT generation failed');
+    }
+};
