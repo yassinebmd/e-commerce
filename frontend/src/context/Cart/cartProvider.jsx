@@ -18,17 +18,21 @@ export const CartProvider = ({ children }) => {
             })
 
             if (!response.ok) {
-                setError('failed to add')
+                return setError('failed to add')
             }
 
             const cart = await response.json();
+            
+            
             if (!cart) {
-                setError('failed to parse cart data')
+                return setError('failed to parse cart data')
             }
 
-            const cartItemMapping = cart.items.map(({ product, quantité }) => ({ productid: product._id, title: product.title, image: product.image, quantité, unitPrice: product.unitPrice }))
+            const cartItemMapping = cart.items.map(({ product, quantité }) => ({ productid: product._id, title: product.title, image: product.image, quantité, unitPrice: product.unitprice }))
+            console.log(cartItemMapping);
+            
             setCartItem([...cartItemMapping])
-            setTotalAmount(cart.totalAmount)
+            setTotalAmount(cart.totalamont)
         } catch (error) {
             console.error(error);
 

@@ -8,8 +8,13 @@ const createCartFoeUser = async ({ userId }) => {
     return cart; // Correct return of the created cart instance
 };
 
-export const getActiveCart = async ({ userId }) => {
-    let cart = await cartModel.findOne({ userId, status: "active" });
+export const getActiveCart = async ({ userId, populatProduct }) => {
+    let cart ;
+    if(populatProduct){
+       cart= await cartModel.findOne({ userId, status: "active" }).populate('items.product');
+    }else{
+       cart= await cartModel.findOne({ userId, status: "active" });
+    }
 
     if (!cart) {
         cart = await createCartFoeUser({ userId });
@@ -36,8 +41,8 @@ export const addnewitems = async ({ userId, productID, quantité }) => {
     cart.items.push({ product: productID, quantité, unitprice: product.price });
     cart.totalamont += product.price * quantité;
 
-    const updatecart = await cart.save();
-    return { data: await updatecart, status: 200 };
+    await cart.save();
+    return { data: await getActiveCart({userId,populatProduct:true}), status: 200 };
 };
 
 export const updateitem = async ({ userId, productID, quantité }) => {
@@ -67,8 +72,8 @@ export const updateitem = async ({ userId, productID, quantité }) => {
 
     cart.totalamont = total;
 
-    const updatedcart = await cart.save();
-    return { data: updatedcart, status: 200 };
+     await cart.save();
+    return { data:await  getActiveCart({userId,populatProduct:true}), status: 200 };
 };
 
 export const deletitem = async ({ userId, productid }) => {
@@ -88,7 +93,7 @@ export const deletitem = async ({ userId, productid }) => {
     cart.items = othercarts;
     cart.totalamont = total;
 
-    const updatedcart = await cart.save();
+    await cart.save();
     return { data: updatedcart, status: 200 };
 };
 
@@ -97,7 +102,7 @@ export const deleteall = async ({ userId }) => {
     cart.items = [];
     cart.totalamont = 0;
     const updatecart = await cart.save();
-    return { data: updatecart, status: 200 };
+    return { data: getActiveCart({userId,populatProduct:true}), status: 200 };
 };
 
 export const checkout = async ({ userId, adress }) => {

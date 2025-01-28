@@ -1,5 +1,5 @@
 import { Container, Typography, Box } from "@mui/material";
-import { UseCart } from "../context/Cart/cartContext";
+import { UseCart } from "../context/Cart/cartContext.jsx";
 
 export const Cart = () => {
     const { cartItem } = UseCart();
@@ -10,9 +10,9 @@ export const Cart = () => {
             {cartItem.length > 0 ? (
                 cartItem.map((item) => (
                     <Box key={item.productid}>
-                        <Typography variant="body1">{item.title}</Typography>
-                        <Typography variant="body2">Price: ${item.unitPrice}</Typography>
-                        <Typography variant="body2">Quantity: {item.quantity}</Typography>
+                        <Typography variant="body1"> title : {item.title}</Typography>
+                        <Typography variant="body2">Price: ${item.price}</Typography>
+                        <Typography variant="body2">Quantity: {item.quantité}</Typography>
                     </Box>
                 ))
             ) : (
