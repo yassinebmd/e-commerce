@@ -37,7 +37,7 @@ export const addnewitems = async ({ userId, productID, quantité }) => {
     cart.totalamont += product.price * quantité;
 
     const updatecart = await cart.save();
-    return { data: updatecart, status: 200 };
+    return { data: await updatecart, status: 200 };
 };
 
 export const updateitem = async ({ userId, productID, quantité }) => {
