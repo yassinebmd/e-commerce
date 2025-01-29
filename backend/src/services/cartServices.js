@@ -47,7 +47,7 @@ export const addnewitems = async ({ userId, productID, quantité }) => {
 
 export const updateitem = async ({ userId, productID, quantité }) => {
     const cart = await getActiveCart({ userId });
-    const existitem = cart.items.find((p) => p.product.toString() === productID);
+    const existitem = cart.items.find((p) => p.product.toString() === productID.toString());
 
     if (!existitem) {
         return { data: 'The product does not exist', status: 400 };
@@ -61,7 +61,7 @@ export const updateitem = async ({ userId, productID, quantité }) => {
         return { data: 'Low stock for item', status: 400 };
     }
 
-    const othercarts = cart.items.filter((p) => p.product.toString() !== productID);
+    const othercarts = cart.items.filter((p) => p.product.toString() !== productID.toString());
     let total = othercarts.reduce((sum, itm) => {
         sum += itm.quantité * itm.unitprice;
         return sum;

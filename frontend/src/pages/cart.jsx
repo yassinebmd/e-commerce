@@ -2,7 +2,14 @@ import { Container, Typography, Box, ButtonGroup, Button } from "@mui/material";
 import { UseCart } from "../context/Cart/cartContext.jsx";
 
 export const Cart = () => {
-    const { cartItem, totalAmount } = UseCart();
+    const { cartItem, totalAmount ,updateitem} = UseCart();
+
+    const  handlQuantity = (productID,quantité) => {
+        if(quantité <= 0){
+            return alert('quantity must be greater than 0');
+        }
+        updateitem(productID,quantité)
+    }
 
     return (
         <Container fixed sx={{ mt: 2, width: '70%' }}>
@@ -11,7 +18,7 @@ export const Cart = () => {
                 <>
                     {cartItem.map((item) => (
                         <Box
-                            key={item.productid}
+                            key={item.productID}
                             display="flex"
                             flexDirection="row"
                             justifyContent="space-between"
@@ -37,8 +44,8 @@ export const Cart = () => {
                             </Box>
 
                             <ButtonGroup variant="contained" aria-label="Basic button group">
-                                <Button>+</Button>
-                                <Button>-</Button>
+                                <Button onClick={()=>handlQuantity(item.productID.toString(),item.quantité +1)}>+</Button>
+                                <Button onClick={()=>handlQuantity(item.productID.toString(),item.quantité -1)}>-</Button>
                             </ButtonGroup>
                         </Box>
                     ))}
