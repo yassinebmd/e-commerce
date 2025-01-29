@@ -94,7 +94,7 @@ export const deletitem = async ({ userId, productid }) => {
     cart.totalamont = total;
 
     await cart.save();
-    return { data: updatedcart, status: 200 };
+    return { data: cart, status: 200 };
 };
 
 export const deleteall = async ({ userId }) => {

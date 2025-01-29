@@ -2,18 +2,29 @@ import { Container, Typography, Box, ButtonGroup, Button } from "@mui/material";
 import { UseCart } from "../context/Cart/cartContext.jsx";
 
 export const Cart = () => {
-    const { cartItem, totalAmount ,updateitem} = UseCart();
+    const { cartItem, totalAmount, updateitem, removeitem , clearitems} = UseCart();
 
-    const  handlQuantity = (productID,quantité) => {
-        if(quantité <= 0){
+    const handlQuantity = (productID, quantité) => {
+        if (quantité <= 0) {
             return alert('quantity must be greater than 0');
         }
-        updateitem(productID,quantité)
+        updateitem(productID, quantité)
     }
 
+    const handlremove = (productID) => {
+        removeitem(productID)
+    }
+
+    
     return (
         <Container fixed sx={{ mt: 2, width: '70%' }}>
-            <Typography variant="h4">My Cart</Typography>
+            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="h4">My Cart</Typography>
+                <Typography>
+                    <Button onClick={() => clearitems()}>clear All</Button>
+
+                </Typography>
+            </Box>
             {cartItem.length > 0 ? (
                 <>
                     {cartItem.map((item) => (
@@ -39,13 +50,13 @@ export const Cart = () => {
                                 <Box>
                                     <Typography variant="h5">{item.title}</Typography>
                                     <Typography>{item.quantité} X {item.unitPrice} MAD</Typography>
-                                    <Button>Remove</Button>
+                                    <Button onClick={() => handlremove(item.productID.toString())}>Remove</Button>
                                 </Box>
                             </Box>
 
                             <ButtonGroup variant="contained" aria-label="Basic button group">
-                                <Button onClick={()=>handlQuantity(item.productID.toString(),item.quantité +1)}>+</Button>
-                                <Button onClick={()=>handlQuantity(item.productID.toString(),item.quantité -1)}>-</Button>
+                                <Button onClick={() => handlQuantity(item.productID.toString(), item.quantité + 1)}>+</Button>
+                                <Button onClick={() => handlQuantity(item.productID.toString(), item.quantité - 1)}>-</Button>
                             </ButtonGroup>
                         </Box>
                     ))}

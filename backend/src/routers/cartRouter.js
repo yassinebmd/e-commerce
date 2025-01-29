@@ -54,7 +54,7 @@ router.delete('/items/:productid',validJWT,async(req,res)=>{
         const userId = req.user._id;
     const {productid} = req.params;
     const result = await deletitem({userId,productid})
-    res.status(result.status).send(result.data)
+    res.status(result.status).json(result.data)
     } catch (error) {
         res.status(500).send('there something went wrong !')
 
