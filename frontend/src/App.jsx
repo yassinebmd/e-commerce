@@ -7,6 +7,8 @@ import { Login } from './pages/login.jsx'
 import { Cart } from './pages/cart.jsx'
 import { ProtectedRoute } from './components/protectedroute.jsx'
 import CartProvider from './context/Cart/cartProvider.jsx'
+import { Checkout } from './pages/checkout.jsx'
+import  SuccessPage  from './pages/succese.jsx'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/Cart' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
+              <Route path='/Succece' element={<SuccessPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

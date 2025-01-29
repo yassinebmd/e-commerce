@@ -1,6 +1,6 @@
 import { Container, Typography, Box, ButtonGroup, Button } from "@mui/material";
 import { UseCart } from "../context/Cart/cartContext.jsx";
-
+import { useNavigate } from "react-router-dom";
 export const Cart = () => {
     const { cartItem, totalAmount, updateitem, removeitem , clearitems} = UseCart();
 
@@ -15,6 +15,7 @@ export const Cart = () => {
         removeitem(productID)
     }
 
+    const navigate = useNavigate();
     
     return (
         <Container fixed sx={{ mt: 2, width: '70%' }}>
@@ -61,8 +62,9 @@ export const Cart = () => {
                         </Box>
                     ))}
 
-                    <Box sx={{ mt: 2 }}>
+                    <Box sx={{ mt: 2 }} display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
                         <Typography variant="h6">Total: {totalAmount} MAD</Typography>
+                        <Button variant="contained" onClick={()=>navigate('/checkout')}>Go to checkout</Button>
                     </Box>
                 </>
             ) : (
