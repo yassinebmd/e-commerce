@@ -32,6 +32,10 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleMyorder = () => {
+    navigate('/orders');
+    handleCloseUserMenu();
+  }
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -96,7 +100,7 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={handleMyorder}>
                     <Typography sx={{ textAlign: 'center' }}>My Orders</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>

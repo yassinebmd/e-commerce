@@ -9,6 +9,7 @@ import { ProtectedRoute } from './components/protectedroute.jsx'
 import CartProvider from './context/Cart/cartProvider.jsx'
 import { Checkout } from './pages/checkout.jsx'
 import  SuccessPage  from './pages/succese.jsx'
+import  MyordersPage  from './pages/myorder.jsx'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path='/Cart' element={<Cart />} />
               <Route path='/checkout' element={<Checkout />} />
               <Route path='/Succece' element={<SuccessPage />} />
+              <Route path='/orders' element={<MyordersPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

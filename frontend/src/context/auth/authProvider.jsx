@@ -4,6 +4,7 @@ import { AuthContext } from './authContext.jsx';
 
 export const AuthProvider = ({ children }) => {
     const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [myorders, setMyOrders] = useState([]);
     const [token, setToken] = useState(() => {
         const storedToken = localStorage.getItem('token');
         try {
@@ -30,15 +31,27 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
     };
 
-    return (
-        <AuthContext.Provider value={{ username, token, login, isauthenticated, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+    const getMyOrders = async () => {
+        const response = await fetch(`http://localhost:5001/user/orders`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
 
-AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-};
+        });
 
-export default AuthProvider;
+        if (!response.ok) {return};
+
+        const data = await response.json();
+        setMyOrders(Array.isArray(data) ? data : []);
+     }
+        return (
+            <AuthContext.Provider value={{ username, token, login, isauthenticated, logout,getMyOrders ,myorders}}>
+                {children}
+            </AuthContext.Provider>
+        );
+    };
+
+    AuthProvider.propTypes = {
+        children: PropTypes.node.isRequired,
+    };
+
+    export default AuthProvider;

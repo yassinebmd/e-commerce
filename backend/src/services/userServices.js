@@ -1,5 +1,7 @@
 import('dotenv/config')
 import { userModel } from "../Models/userShema.js"
+import { orderModel } from '../Models/orderModel.js'
+
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
@@ -45,6 +47,16 @@ export const login = async ({ password, email }) => {
         return { data: 'An error occurred while logging in', statuscode: 500 };
     }
 };
+
+export const getOrders = async({ userId }) => {
+    try{
+        return {data :await orderModel.find({userId}),statuscode:200}
+    } catch (error) {
+        console.error("Error getting orders:", error);
+        throw new Error('Error getting orders');
+    }
+}
+
 
 const gen_jwt = (data) => {
     try {
